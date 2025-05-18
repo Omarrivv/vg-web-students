@@ -1,25 +1,93 @@
-import apiClient from './api';
+import { apiClient } from '../config/api.config';
 
-// Obtener todos los estudiantes
-export const getAllStudents = () => apiClient.get('/students');
+export const studentService = {
+    // Obtener todos los estudiantes
+    getAllStudents: async () => {
+        try {
+            const response = await apiClient.get('/students');
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Obtener estudiante por ID
-export const getStudentById = (id) => apiClient.get(`/students/${id}`);
+    // Obtener estudiante por ID
+    getStudentById: async (id) => {
+        try {
+            const response = await apiClient.get(`/students/${id}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Crear estudiante
-export const createStudent = (studentData) => apiClient.post('/students', studentData);
+    // Crear estudiante
+    createStudent: async (studentData) => {
+        try {
+            const response = await apiClient.post('/students', studentData);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Actualizar estudiante
-export const updateStudent = (id, studentData) => apiClient.put(`/students/${id}`, studentData);
+    // Actualizar estudiante
+    updateStudent: async (id, studentData) => {
+        try {
+            const response = await apiClient.put(`/students/${id}`, studentData);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Eliminar estudiante
-export const deleteStudent = (id) => apiClient.delete(`/students/${id}`);
+    // Eliminar estudiante (borrado lógico)
+    deleteStudent: async (id) => {
+        try {
+            const response = await apiClient.delete(`/students/${id}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar estudiantes por institución
-export const getStudentsByInstitution = (institutionId) => apiClient.get(`/students/institution/${institutionId}`);
+    // Restaurar estudiante
+    restoreStudent: async (id) => {
+        try {
+            const response = await apiClient.put(`/students/${id}/restore`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar estudiantes por estado
-export const getStudentsByStatus = (status) => apiClient.get(`/students/status/${status}`);
+    // Listar estudiantes por institución
+    getStudentsByInstitution: async (institutionId) => {
+        try {
+            const response = await apiClient.get(`/students/institution/${institutionId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar estudiantes por género
-export const getStudentsByGender = (gender) => apiClient.get(`/students/gender/${gender}`);
+    // Listar estudiantes por estado
+    getStudentsByStatus: async (status) => {
+        try {
+            const response = await apiClient.get(`/students/status/${status}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Listar estudiantes por género
+    getStudentsByGender: async (gender) => {
+        try {
+            const response = await apiClient.get(`/students/gender/${gender}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+};

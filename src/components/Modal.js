@@ -6,9 +6,16 @@ function Modal({ isOpen, onClose, title, children }) {
     return null;
   }
 
+  const handleOverlayClick = (e) => {
+    // Evitar que el clic se propague si ocurre en el overlay
+    if (e.target.className === 'modal-overlay') {
+      e.stopPropagation();
+    }
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}> {/* Cierra al hacer clic fuera */}
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}> {/* Evita que el clic dentro cierre el modal */}
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-content">
         <button className="modal-close-button" onClick={onClose}>&times;</button>
         {title && <h2>{title}</h2>}
         {children}

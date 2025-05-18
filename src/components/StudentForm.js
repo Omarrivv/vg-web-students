@@ -1,129 +1,200 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { Form, Input, Select, DatePicker, Button, Space, Row, Col } from 'antd';
+import { UserOutlined, IdcardOutlined, MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
 
-function StudentForm({ initialData, onSubmit, onCancel }) {
-  // Estado inicial para un nuevo estudiante o para editar uno existente
-  const defaultStudent = {
-    institutionId: '1', // Puedes hacerlo dinámico si tienes múltiples instituciones
-    firstName: '',
-    lastName: '',
-    documentType: 'DNI', // Valor por defecto
-    documentNumber: '',
-    gender: 'M', // Valor por defecto
-    birthDate: '',
-    address: '',
-    phone: '',
-    email: '',
-    // nameQr: '', // Generalmente se genera en el backend o al guardar
-    status: 'A' // Valor por defecto
-  };
+const { Option } = Select;
 
-  const [student, setStudent] = useState(defaultStudent);
+const StudentForm = ({ initialValues, onSubmit, onCancel }) => {
+    const [form] = Form.useForm();
 
-  // Si recibimos initialData (para editar), actualizamos el estado
-  useEffect(() => {
-    if (initialData) {
-      // Formatear fecha para input type="date"
-      const formattedData = {
-          ...initialData,
-          birthDate: initialData.birthDate ? initialData.birthDate.split('T')[0] : '' // Asegura yyyy-MM-dd
-      };
-      setStudent(formattedData);
-    } else {
-      setStudent(defaultStudent); // Resetear a valores por defecto si no hay data inicial (ej. al abrir para crear)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialData]); // Se ejecuta cuando initialData cambia
+    useEffect(() => {
+        if (initialValues) {
+            form.setFieldsValue({
+                ...initialValues,
+                birthDate: initialValues.birthDate ? moment(initialValues.birthDate) : null,
+            });
+        } else {
+            form.resetFields();
+        }
+    }, [initialValues, form]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setStudent({ ...student, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Preparamos los datos para enviar, podríamos añadir validaciones aquí
-    const studentToSend = {
-        ...student,
-        // El nameQr se podría generar aquí o dejárselo al backend
-        nameQr: `${student.firstName}_${student.lastName}_${student.documentNumber}`
+    const handleSubmit = async (values) => {
+        try {
+            const formattedValues = {
+                ...values,
+                birthDate: values.birthDate.format('YYYY-MM-DD'),
+                nameQr: `${values.firstName}_${values.lastName}_${values.documentNumber}`,
+                status: 'A'
+            };
+            await onSubmit(formattedValues);
+            form.resetFields();
+            showSuccessAlert('Estudiante guardado correctamente');
+        } catch (error) {
+            showErrorAlert('Error al guardar el estudiante');
+        }
     };
-    onSubmit(studentToSend);
-  };
 
-  return (
-    <form onSubmit={handleSubmit} className="form-container">
-      {/* Campos del formulario */}
-      <div className="form-group">
-        <label htmlFor="firstName">Nombres</label>
-        <input type="text" id="firstName" name="firstName" value={student.firstName} onChange={handleChange} required />
-      </div>
-      <div className="form-group">
-        <label htmlFor="lastName">Apellidos</label>
-        <input type="text" id="lastName" name="lastName" value={student.lastName} onChange={handleChange} required />
-      </div>
+    const validateDocumentNumber = (_, value) => {
+        if (!value) {
+            return Promise.reject('Por favor ingrese el número de documento');
+        }
+        if (!/^\d{8,12}$/.test(value)) {
+            return Promise.reject('El número de documento debe tener entre 8 y 12 dígitos');
+        }
+        return Promise.resolve();
+    };
 
-      <div style={{ display: 'flex', gap: '15px' }}> {/* Contenedor Flex para campos en línea */}
-          <div className="form-group" style={{ flex: 1 }}>
-            <label htmlFor="documentType">Tipo Documento</label>
-            <select id="documentType" name="documentType" value={student.documentType} onChange={handleChange} required>
-              <option value="DNI">DNI</option>
-              <option value="CE">Carnet Extranjería</option>
-              <option value="PAS">Pasaporte</option>
-            </select>
-          </div>
-          <div className="form-group" style={{ flex: 2 }}>
-            <label htmlFor="documentNumber">Número Documento</label>
-            <input type="text" id="documentNumber" name="documentNumber" value={student.documentNumber} onChange={handleChange} required />
-          </div>
-      </div>
+    const validatePhone = (_, value) => {
+        if (!value) {
+            return Promise.reject('Por favor ingrese el teléfono');
+        }
+        if (!/^\d{9,9}$/.test(value)) {
+            return Promise.reject('El teléfono debe tener entre 9 dígitos y que empiese con 9');
+        }
+        return Promise.resolve();
+    };
 
-      <div style={{ display: 'flex', gap: '15px' }}>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label htmlFor="gender">Género</label>
-            <select id="gender" name="gender" value={student.gender} onChange={handleChange} required>
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-            </select>
-          </div>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label htmlFor="birthDate">Fecha Nacimiento</label>
-            <input type="date" id="birthDate" name="birthDate" value={student.birthDate} onChange={handleChange} required />
-          </div>
-      </div>
+    return (
+        <Form
+            form={form}
+            layout="vertical"
+            onFinish={handleSubmit}
+            className="student-form"
+        >
+            <Row gutter={16}>
+                <Col span={12}>
+                    <Form.Item
+                        name="institutionId"
+                        label="ID de Institución"
+                        rules={[{ required: true, message: 'Por favor ingrese el ID de la institución' }]}
+                    >
+                        <Input prefix={<IdcardOutlined />} placeholder="Ingrese el ID de la institución" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
+                        name="documentType"
+                        label="Tipo de Documento"
+                        rules={[{ required: true, message: 'Por favor seleccione el tipo de documento' }]}
+                    >
+                        <Select placeholder="Seleccione el tipo de documento">
+                            <Option value="DNI">DNI</Option>
+                            <Option value="CE">CE</Option>
+                            <Option value="PASAPORTE">PASAPORTE</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
 
-      <div className="form-group">
-        <label htmlFor="address">Dirección</label>
-        <input type="text" id="address" name="address" value={student.address} onChange={handleChange} />
-      </div>
+            <Row gutter={16}>
+                <Col span={12}>
+                    <Form.Item
+                        name="firstName"
+                        label="Nombres"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese los nombres' },
+                            { min: 2, message: 'Los nombres deben tener al menos 2 caracteres' }
+                        ]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Ingrese los nombres" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
+                        name="lastName"
+                        label="Apellidos"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese los apellidos' },
+                            { min: 2, message: 'Los apellidos deben tener al menos 2 caracteres' }
+                        ]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Ingrese los apellidos" />
+                    </Form.Item>
+                </Col>
+            </Row>
 
-       <div style={{ display: 'flex', gap: '15px' }}>
-            <div className="form-group" style={{ flex: 1 }}>
-                <label htmlFor="phone">Teléfono</label>
-                <input type="tel" id="phone" name="phone" value={student.phone} onChange={handleChange} />
-            </div>
-            <div className="form-group" style={{ flex: 1 }}>
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="email" value={student.email} onChange={handleChange} required />
-            </div>
-       </div>
+            <Row gutter={16}>
+                <Col span={12}>
+                    <Form.Item
+                        name="documentNumber"
+                        label="Número de Documento"
+                        rules={[{ validator: validateDocumentNumber }]}
+                    >
+                        <Input prefix={<IdcardOutlined />} placeholder="Ingrese el número de documento" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
+                        name="gender"
+                        label="Género"
+                        rules={[{ required: true, message: 'Por favor seleccione el género' }]}
+                    >
+                        <Select placeholder="Seleccione el género">
+                            <Option value="M">Masculino</Option>
+                            <Option value="F">Femenino</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
 
-       <div className="form-group">
-            <label htmlFor="status">Estado</label>
-            <select id="status" name="status" value={student.status} onChange={handleChange} required>
-              <option value="A">Activo</option>
-              <option value="I">Inactivo</option>
-            </select>
-       </div>
+            <Row gutter={16}>
+                <Col span={12}>
+                    <Form.Item
+                        name="birthDate"
+                        label="Fecha de Nacimiento"
+                        rules={[{ required: true, message: 'Por favor seleccione la fecha de nacimiento' }]}
+                    >
+                        <DatePicker 
+                            style={{ width: '100%' }} 
+                            placeholder="Seleccione la fecha"
+                            disabledDate={(current) => current && current > moment().endOf('day')}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
+                        name="phone"
+                        label="Teléfono"
+                        rules={[{ validator: validatePhone }]}
+                    >
+                        <Input prefix={<PhoneOutlined />} placeholder="Ingrese el teléfono" />
+                    </Form.Item>
+                </Col>
+            </Row>
 
-        {/* Institution ID (podría ser un campo oculto o un selector si hay varias) */}
-        <input type="hidden" name="institutionId" value={student.institutionId} />
+            <Form.Item
+                name="address"
+                label="Dirección"
+                rules={[{ required: true, message: 'Por favor ingrese la dirección' }]}
+            >
+                <Input prefix={<HomeOutlined />} placeholder="Ingrese la dirección" />
+            </Form.Item>
 
-      <div className="form-actions">
-        <button type="button" onClick={onCancel} className="cancel">Cancelar</button>
-        <button type="submit">{initialData ? 'Actualizar' : 'Crear'} Estudiante</button>
-      </div>
-    </form>
-  );
-}
+            <Form.Item
+                name="email"
+                label="Email"
+                rules={[
+                    { required: true, message: 'Por favor ingrese el email' },
+                    { type: 'email', message: 'Por favor ingrese un email válido' }
+                ]}
+            >
+                <Input prefix={<MailOutlined />} placeholder="Ingrese el email" />
+            </Form.Item>
+
+            <Form.Item>
+                <Space>
+                    <Button type="primary" htmlType="submit">
+                        {initialValues ? 'Actualizar' : 'Crear'}
+                    </Button>
+                    <Button onClick={onCancel}>
+                        Cancelar
+                    </Button>
+                </Space>
+            </Form.Item>
+        </Form>
+    );
+};
 
 export default StudentForm;

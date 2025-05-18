@@ -1,263 +1,808 @@
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --secondary-color: #64748b;
+  --success-color: #22c55e;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  --background-color: #f8fafc;
+  --surface-color: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+}
+
 /* Estilos generales */
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #e3f0ff 0%, #b3c6ff 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
 }
 
-.App {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 30px 20px;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 60, 120, 0.10);
-}
-
-h1, h2 {
-  color: #1756a9;
-  text-align: center;
-  margin-bottom: 24px;
-  font-weight: 700;
-}
-
-nav {
-  background: #eaf2fb;
-  border-radius: 8px 8px 0 0;
-  padding: 12px 24px;
-  margin-bottom: 24px;
+/* Header */
+.header {
   display: flex;
-  gap: 24px;
-}
-nav a {
-  color: #1756a9;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 1.1em;
-  transition: color 0.2s;
-}
-nav a:hover {
-  color: #0d2e5e;
-  text-decoration: underline;
-}
-
-/* Tabla moderna y responsiva */
-.responsive-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 24px;
-  background: #f8fbff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(23,86,169,0.06);
-}
-.responsive-table th,
-.responsive-table td {
-  border: none;
-  padding: 14px 12px;
-  text-align: left;
-}
-.responsive-table th {
-  background: #1756a9;
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-.responsive-table tr:nth-child(even) {
-  background-color: #eaf2fb;
-}
-.responsive-table tr:hover {
-  background: #d6e6fa;
-}
-
-/* Botones de acción con iconos */
-.responsive-table button {
-  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  margin-right: 4px;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.98em;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 2px rgba(23,86,169,0.08);
-}
-.responsive-table .edit {
-  background: #1976d2;
-  color: #fff;
-}
-.responsive-table .edit:hover {
-  background: #1251a3;
-}
-.responsive-table .delete {
-  background: #e53935;
-  color: #fff;
-}
-.responsive-table .delete:hover {
-  background: #a31515;
-}
-.responsive-table button:disabled {
-  background: #b0b8c1;
-  color: #fff;
-  cursor: not-allowed;
+  padding: 0 24px;
+  background: linear-gradient(to right, #1e40af, #1d4ed8);
+  height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.add-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-  padding: 12px 22px;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.1em;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(23,86,169,0.08);
-  transition: background 0.2s;
-}
-.add-button:hover {
-  background: #1251a3;
-}
-
-/* Formularios educativos */
-.form-container {
-  background: #f4f9ff;
-  padding: 24px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  border: 1px solid #d6e6fa;
-  box-shadow: 0 1px 4px rgba(23,86,169,0.06);
-}
-.form-group {
-  margin-bottom: 18px;
-}
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #1756a9;
-}
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #b3c6ff;
-  border-radius: 4px;
-  font-size: 1em;
-  background: #fff;
-  color: #222;
-  box-sizing: border-box;
-  transition: border 0.2s;
-}
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border: 1.5px solid #1976d2;
-  outline: none;
-}
-.form-actions {
-  text-align: right;
-  margin-top: 20px;
-}
-.form-actions button {
-  padding: 10px 18px;
-  margin-left: 10px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-  background: #1976d2;
+.header h1 {
   color: white;
+  font-size: 1.5rem;
+  margin: 0;
   font-weight: 600;
-  font-size: 1em;
-  transition: background 0.2s;
-}
-.form-actions button.cancel {
-  background: #b0b8c1;
-}
-.form-actions button:hover {
-  opacity: 0.92;
 }
 
-/* Mensajes educativos */
-.feedback-message {
-  padding: 12px 18px;
-  border-radius: 6px;
-  margin-bottom: 18px;
+/* Layout */
+.site-layout-background {
+  background: var(--surface-color);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 24px;
+  padding: 24px;
+  min-height: calc(100vh - 112px);
+}
+
+/* Menú lateral */
+.ant-menu {
+  border-right: none !important;
+  background: transparent;
+}
+
+.ant-menu-item {
+  margin: 8px 16px !important;
+  padding: 0 16px !important;
+  border-radius: 8px;
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+.ant-menu-item:hover {
+  background-color: #e2e8f0 !important;
+  color: var(--primary-color) !important;
+}
+
+.ant-menu-item-selected {
+  background-color: #dbeafe !important;
+  color: var(--primary-color) !important;
+}
+
+/* Tabla */
+.ant-table {
+  background: var(--surface-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ant-table-thead > tr > th {
+  background: #f8fafc !important;
+  color: var(--text-primary) !important;
+  font-weight: 600;
+  padding: 16px !important;
+}
+
+.ant-table-tbody > tr > td {
+  padding: 16px !important;
+}
+
+.ant-table-row:hover > td {
+  background-color: #f1f5f9 !important;
+}
+
+/* Botones */
+.ant-btn {
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 20px;
   font-weight: 500;
-  font-size: 1.05em;
-  text-align: center;
-}
-.feedback-message.success {
-  background: #e3f7e7;
-  color: #197d3a;
-  border: 1px solid #b2e2c6;
-}
-.feedback-message.error {
-  background: #ffe3e3;
-  color: #a31515;
-  border: 1px solid #f5c6cb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
 }
 
-/* Modal educativo */
+.ant-btn-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.ant-btn-primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.ant-btn-dangerous {
+  background: white;
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+}
+
+.ant-btn-dangerous:hover {
+  background: var(--danger-color) !important;
+  color: white !important;
+  border-color: var(--danger-color) !important;
+}
+
+/* Formularios */
+.student-form,
+.enrollment-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.ant-input,
+.ant-select-selector,
+.ant-picker,
+.ant-input-affix-wrapper {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+.ant-select-selector {
+  background-color: #1c1f2e !important;
+}
+
+.ant-select-selection-placeholder,
+.ant-input::placeholder {
+  color: #8b949e !important;
+}
+
+.ant-picker-input > input {
+  color: #ffffff !important;
+}
+
+.ant-form-item-label > label {
+  color: #ffffff !important;
+}
+
+/* Estilos para los iconos en los inputs */
+.ant-input-prefix,
+.ant-input-suffix,
+.ant-select-arrow,
+.ant-picker-suffix {
+  color: #8b949e !important;
+}
+
+/* Estilos hover y focus */
+.ant-input:hover,
+.ant-select-selector:hover,
+.ant-picker:hover,
+.ant-input-affix-wrapper:hover {
+  border-color: #3b82f6 !important;
+  background-color: #1c1f2e !important;
+}
+
+.ant-input:focus,
+.ant-select-focused .ant-select-selector,
+.ant-picker-focused,
+.ant-input-affix-wrapper-focused {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+  background-color: #1c1f2e !important;
+}
+
+/* Dropdown del select */
+.ant-select-dropdown {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+}
+
+.ant-select-item {
+  color: #ffffff !important;
+}
+
+.ant-select-item-option-active {
+  background-color: #252b3b !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* Modal con fondo oscuro */
+.modal-content {
+  background-color: #151821 !important;
+}
+
+.modal-content h2 {
+  color: #ffffff !important;
+}
+
+/* Tags */
+.ant-tag {
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-weight: 500;
+}
+
+.ant-tag-success {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.ant-tag-error {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+/* Modal */
+.ant-modal-content {
+  border-radius: 12px;
+  padding: 0;
+}
+
+.ant-modal-header {
+  border-radius: 12px 12px 0 0;
+  background: #f8fafc;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ant-modal-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ant-modal-body {
+  padding: 24px;
+}
+
+.ant-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .header h1 {
+    font-size: 1.2rem;
+  }
+
+  .site-layout-background {
+    margin: 16px;
+    padding: 16px;
+  }
+
+  .ant-table {
+    font-size: 14px;
+  }
+
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    padding: 12px 8px !important;
+  }
+
+  .student-form,
+  .enrollment-form {
+    padding: 16px;
+  }
+
+  [class*='ant-col-'] {
+    padding: 4px !important;
+  }
+
+  .ant-form-item {
+    margin-bottom: 16px;
+  }
+
+  .ant-btn {
+    padding: 0 12px;
+    font-size: 14px;
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #0f172a;
+    --surface-color: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+  }
+
+  body {
+    background-color: var(--background-color);
+  }
+
+  .ant-table {
+    background: var(--surface-color);
+  }
+
+  .ant-table-thead > tr > th {
+    background: #1e293b !important;
+    color: var(--text-primary) !important;
+  }
+
+  .ant-table-tbody > tr > td {
+    color: var(--text-secondary);
+  }
+
+  .ant-table-row:hover > td {
+    background-color: #334155 !important;
+  }
+
+  .ant-input,
+  .ant-select-selector,
+  .ant-picker {
+    background-color: var(--surface-color) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+  }
+
+  .ant-select-selection-item {
+    color: var(--text-primary) !important;
+  }
+
+  .ant-modal-content,
+  .ant-modal-header {
+    background-color: var(--surface-color);
+  }
+
+  .ant-modal-title {
+    color: var(--text-primary);
+  }
+
+  .ant-form-item-label > label {
+    color: var(--text-primary) !important;
+  }
+
+  .ant-menu {
+    background: transparent !important;
+  }
+
+  .ant-menu-item {
+    color: var(--text-secondary) !important;
+  }
+
+  .ant-menu-item:hover {
+    background-color: #334155 !important;
+  }
+
+  .ant-menu-item-selected {
+    background-color: #1e40af !important;
+    color: white !important;
+  }
+}
+
+.action-button {
+    background: transparent;
+    border: 1px solid #2d3548;
+    color: #8b949e;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.action-button:hover {
+    background: #2d3548;
+    color: #ffffff;
+}
+
+.action-button.edit {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.action-button.edit:hover {
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.action-button.delete {
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+.action-button.delete:hover {
+    background: rgba(220, 38, 38, 0.1);
+}
+
+/* Estilos para el botón de nuevo */
+.ant-btn-primary {
+    background: #2563eb !important;
+    border: none !important;
+    height: 40px !important;
+    padding: 0 20px !important;
+    font-weight: 500 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.ant-btn-primary:hover {
+    background: #1d4ed8 !important;
+}
+
+/* Estilos para los filtros */
+.filter-container {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    background: #252b3b;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.filter-select {
+    min-width: 150px;
+}
+
+/* Estilos para el estado */
+.status-tag {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-tag.active {
+    background: #059669;
+    color: #ffffff;
+}
+
+.status-tag.inactive {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+/* Estilos para la tabla */
+.ant-table-wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ant-table-cell {
+    font-size: 14px !important;
+}
+
+/* Estilos para los iconos en la tabla */
+.table-icon {
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+/* Estilos para el modal */
+.dark-modal .ant-modal-content {
+    background: #1e2433;
+    border-radius: 8px;
+}
+
+.dark-modal .ant-modal-header {
+    background: #1e2433;
+    border-bottom: 1px solid #2d3548;
+}
+
+.dark-modal .ant-modal-title {
+    color: #ffffff;
+}
+
+.dark-modal .ant-modal-close {
+    color: #8b949e;
+}
+
+.dark-modal .ant-modal-close:hover {
+    color: #ffffff;
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(23, 86, 169, 0.18);
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
+
 .modal-content {
-  background-color: #fff;
-  padding: 32px 28px;
-  border-radius: 10px;
-  box-shadow: 0 5px 24px rgba(23,86,169,0.13);
-  width: 95%;
-  max-width: 520px;
+  background: var(--dark-surface);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  width: 90%;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  position: relative;
-}
-.modal-close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  color: #b0b8c1;
-  transition: color 0.2s;
-}
-.modal-close-button:hover {
-  color: #1976d2;
+  border: 1px solid var(--dark-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-/* Responsividad */
-@media screen and (max-width: 768px) {
-  .App {
-    padding: 8px 2px;
-  }
-  .responsive-table th, .responsive-table td {
-    padding: 10px 6px;
-    font-size: 0.98em;
-  }
-  .form-container {
-    padding: 12px 6px;
-  }
-  .modal-content {
-    padding: 18px 6px;
-  }
+.modal-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--dark-text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close-button:hover {
+  background: var(--dark-input);
+  color: var(--dark-text);
+}
+
+.modal-content h2 {
+  color: var(--dark-text);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  padding-right: 40px;
+}
+
+/* Estilos del formulario de estudiante */
+.student-form {
+  background-color: #151821;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+/* Campos del formulario */
+.ant-form-item {
+  margin-bottom: 20px;
+}
+
+/* Inputs con iconos */
+.ant-input-affix-wrapper {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+  height: 40px;
+  padding: 4px 12px;
+}
+
+.ant-input-affix-wrapper input.ant-input {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper-focused {
+  border-color: #3b82f6 !important;
+}
+
+/* Inputs de texto y número */
+.ant-input {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+  color: #ffffff !important;
+  height: 40px;
+}
+
+/* Select (dropdowns) */
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+  height: 40px !important;
+  padding: 4px 12px !important;
+  color: #ffffff !important;
+}
+
+.ant-select-selection-placeholder {
+  color: #8b949e !important;
+}
+
+/* DatePicker */
+.ant-picker {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+  height: 40px;
+}
+
+.ant-picker-input > input {
+  color: #ffffff !important;
+}
+
+.ant-picker-suffix {
+  color: #8b949e !important;
+}
+
+/* Labels requeridos */
+.ant-form-item-required::before {
+  color: #ef4444 !important;
+  margin-right: 4px !important;
+}
+
+/* Títulos del formulario */
+.ant-form-item-label > label {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+/* Placeholder text */
+input::placeholder,
+.ant-select-selection-placeholder,
+.ant-picker-input > input::placeholder {
+  color: #8b949e !important;
+  opacity: 0.8;
+}
+
+/* Estilos para los iconos en los inputs */
+.ant-input-prefix {
+  color: #8b949e !important;
+  margin-right: 8px;
+}
+
+/* Botones del formulario */
+.ant-form-item-control-input-content .ant-btn {
+  height: 40px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.ant-form-item-control-input-content .ant-btn-primary {
+  background: #3b82f6 !important;
+  border: none;
+}
+
+.ant-form-item-control-input-content .ant-btn-default {
+  background: transparent !important;
+  border: 1px solid #2d3548;
+  color: #ffffff;
+}
+
+/* Mensajes de error */
+.ant-form-item-explain-error {
+  color: #ef4444 !important;
+  margin-top: 4px;
+}
+
+/* Estilos específicos para el formulario en modo oscuro */
+.dark-modal .ant-input,
+.dark-modal .ant-select-selector,
+.dark-modal .ant-picker,
+.dark-modal .ant-input-affix-wrapper {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+  color: #ffffff !important;
+}
+
+.dark-modal .ant-select-selector {
+  background-color: #1c1f2e !important;
+  height: 40px !important;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.dark-modal .ant-select-selection-item {
+  color: #ffffff !important;
+  line-height: 38px !important;
+}
+
+.dark-modal .ant-select-selection-placeholder {
+  color: #8b949e !important;
+  line-height: 38px !important;
+}
+
+.dark-modal .ant-input {
+  height: 40px !important;
+  padding: 4px 12px !important;
+}
+
+.dark-modal .ant-input::placeholder {
+  color: #8b949e !important;
+}
+
+.dark-modal .ant-picker {
+  height: 40px !important;
+}
+
+.dark-modal .ant-picker-input > input {
+  color: #ffffff !important;
+}
+
+.dark-modal .ant-picker-suffix {
+  color: #8b949e !important;
+}
+
+.dark-modal .ant-form-item-label > label {
+  color: #ffffff !important;
+}
+
+.dark-modal .ant-input-affix-wrapper {
+  padding: 0 12px !important;
+  height: 40px !important;
+}
+
+.dark-modal .ant-input-affix-wrapper > input.ant-input {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+.dark-modal .ant-input-prefix {
+  color: #8b949e !important;
+  margin-right: 8px !important;
+}
+
+/* Estilos para los estados hover y focus */
+.dark-modal .ant-input:hover,
+.dark-modal .ant-select-selector:hover,
+.dark-modal .ant-picker:hover,
+.dark-modal .ant-input-affix-wrapper:hover {
+  border-color: #3b82f6 !important;
+}
+
+.dark-modal .ant-input:focus,
+.dark-modal .ant-select-focused .ant-select-selector,
+.dark-modal .ant-picker-focused,
+.dark-modal .ant-input-affix-wrapper-focused {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Dropdown del select en modo oscuro */
+.ant-select-dropdown {
+  background-color: #1c1f2e !important;
+  border: 1px solid #2d3548 !important;
+  padding: 4px !important;
+}
+
+.ant-select-item {
+  color: #ffffff !important;
+  padding: 8px 12px !important;
+  border-radius: 4px !important;
+}
+
+.ant-select-item-option-active {
+  background-color: #252b3b !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* Botones en el formulario */
+.dark-modal .ant-btn {
+  height: 40px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.dark-modal .ant-btn-primary {
+  background: #3b82f6 !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+.dark-modal .ant-btn-default {
+  background: transparent !important;
+  border: 1px solid #2d3548 !important;
+  color: #8b949e !important;
 }

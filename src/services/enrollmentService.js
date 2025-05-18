@@ -1,61 +1,133 @@
-import apiClient from './api';
+import { apiClient } from '../config/api.config';
 
-// Obtener todas las matrículas
-export const getAllEnrollments = () => {
-  return apiClient.get('/classroom-students');
-};
+export const enrollmentService = {
+    // Obtener todas las matrículas
+    getAllEnrollments: async () => {
+        try {
+            const response = await apiClient.get('/classroom-students');
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Crear matrícula
-export const createEnrollment = (enrollmentData) => {
-  return apiClient.post('/classroom-students', enrollmentData);
-};
+    // Obtener matrícula por ID
+    getEnrollmentById: async (id) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/${id}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Obtener matrícula por ID
-export const getEnrollmentById = (id) => {
-  return apiClient.get(`/classroom-students/${id}`);
-};
+    // Crear matrícula
+    createEnrollment: async (enrollmentData) => {
+        try {
+            const response = await apiClient.post('/classroom-students', enrollmentData);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Actualizar matrícula
-export const updateEnrollment = (id, enrollmentData) => {
-  return apiClient.put(`/classroom-students/${id}`, enrollmentData);
-};
+    // Actualizar matrícula
+    updateEnrollment: async (id, enrollmentData) => {
+        try {
+            const response = await apiClient.put(`/classroom-students/${id}`, enrollmentData);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Eliminar matrícula
-export const deleteEnrollment = (id) => {
-  return apiClient.delete(`/classroom-students/${id}`);
-};
+    // Eliminar matrícula
+    deleteEnrollment: async (id) => {
+        try {
+            const response = await apiClient.delete(`/classroom-students/${id}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar matrículas por estudiante
-export const getEnrollmentsByStudent = (studentId) => {
-  return apiClient.get(`/classroom-students/student/${studentId}`);
-};
+    // Restaurar matrícula
+    restoreEnrollment: async (id) => {
+        try {
+            const response = await apiClient.put(`/classroom-students/${id}/restore`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar matrículas por aula
-export const getEnrollmentsByClassroom = (classroomId) => {
-  return apiClient.get(`/classroom-students/classroom/${classroomId}`);
-};
+    // Listar matrículas por estudiante
+    getEnrollmentsByStudent: async (studentId) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/student/${studentId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar matrículas por estado
-export const getEnrollmentsByStatus = (status) => {
-  return apiClient.get(`/classroom-students/status/${status}`);
-};
+    // Listar matrículas por aula
+    getEnrollmentsByClassroom: async (classroomId) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/classroom/${classroomId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar matrículas por año
-export const getEnrollmentsByYear = (enrollmentYear) => {
-  return apiClient.get(`/classroom-students/year/${enrollmentYear}`);
-};
+    // Listar matrículas por estado
+    getEnrollmentsByStatus: async (status) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/status/${status}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar matrículas por periodo
-export const getEnrollmentsByPeriod = (enrollmentPeriod) => {
-  return apiClient.get(`/classroom-students/period/${enrollmentPeriod}`);
-};
+    // Listar matrículas por año
+    getEnrollmentsByYear: async (year) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/year/${year}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar matrículas por estudiante y estado
-export const getEnrollmentsByStudentAndStatus = (studentId, status) => {
-  return apiClient.get(`/classroom-students/student/${studentId}/status/${status}`);
-};
+    // Listar matrículas por periodo
+    getEnrollmentsByPeriod: async (period) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/period/${period}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
-// Listar matrículas por aula y estado
-export const getEnrollmentsByClassroomAndStatus = (classroomId, status) => {
-  return apiClient.get(`/classroom-students/classroom/${classroomId}/status/${status}`);
+    // Listar matrículas por estudiante y estado
+    getEnrollmentsByStudentAndStatus: async (studentId, status) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/student/${studentId}/status/${status}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Listar matrículas por aula y estado
+    getEnrollmentsByClassroomAndStatus: async (classroomId, status) => {
+        try {
+            const response = await apiClient.get(`/classroom-students/classroom/${classroomId}/status/${status}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
 };

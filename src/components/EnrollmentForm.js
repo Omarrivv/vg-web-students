@@ -1,140 +1,134 @@
-import React, { useState, useEffect } from 'react';
-import '../App.css';
+import React, { useEffect } from 'react';
+import { Form, Input, Select, DatePicker, Button, Space, Row, Col } from 'antd';
+import { BookOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
 
-function EnrollmentForm({ initialData, onSubmit, onCancel }) {
-  const [formData, setFormData] = useState({
-    classroomId: '',
-    studentId: '',
-    enrollmentDate: '',
-    enrollmentYear: '',
-    enrollmentPeriod: '',
-    status: 'A'
-  });
+const { Option } = Select;
 
-  // Cargar datos iniciales si estamos editando
-  useEffect(() => {
-    if (initialData) {
-      // Formatear la fecha para el input date (YYYY-MM-DD)
-      const formattedDate = initialData.enrollmentDate ? 
-        new Date(initialData.enrollmentDate).toISOString().split('T')[0] : '';
+const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
+    const [form] = Form.useForm();
 
-      setFormData({
-        classroomId: initialData.classroomId || '',
-        studentId: initialData.studentId || '',
-        enrollmentDate: formattedDate,
-        enrollmentYear: initialData.enrollmentYear || '',
-        enrollmentPeriod: initialData.enrollmentPeriod || '',
-        status: initialData.status || 'A'
-      });
-    }
-  }, [initialData]);
+    useEffect(() => {
+        if (initialValues) {
+            form.setFieldsValue({
+                ...initialValues,
+                enrollmentDate: initialValues.enrollmentDate ? moment(initialValues.enrollmentDate) : null,
+            });
+        } else {
+            form.resetFields();
+        }
+    }, [initialValues, form]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Convertir la fecha a formato ISO
-    const enrollmentData = {
-      ...formData,
-      enrollmentDate: formData.enrollmentDate ? new Date(formData.enrollmentDate).toISOString() : null
+    const handleSubmit = async (values) => {
+        try {
+            const formattedValues = {
+                ...values,
+                enrollmentDate: values.enrollmentDate.format('YYYY-MM-DD'),
+                status: 'A'
+            };
+            await onSubmit(formattedValues);
+            form.resetFields();
+            showSuccessAlert('Matrícula guardada correctamente');
+        } catch (error) {
+            showErrorAlert('Error al guardar la matrícula');
+        }
     };
-    
-    onSubmit(enrollmentData);
-  };
 
-  return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <div className="form-group">
-        <label htmlFor="classroomId">ID del Aula:</label>
-        <input
-          type="text"
-          id="classroomId"
-          name="classroomId"
-          value={formData.classroomId}
-          onChange={handleChange}
-          required
-        />
-      </div>
+    const currentYear = moment().year();
+    const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
 
-      <div className="form-group">
-        <label htmlFor="studentId">ID del Estudiante:</label>
-        <input
-          type="text"
-          id="studentId"
-          name="studentId"
-          value={formData.studentId}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="enrollmentDate">Fecha de Matrícula:</label>
-        <input
-          type="date"
-          id="enrollmentDate"
-          name="enrollmentDate"
-          value={formData.enrollmentDate}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="enrollmentYear">Año de Matrícula:</label>
-        <input
-          type="text"
-          id="enrollmentYear"
-          name="enrollmentYear"
-          value={formData.enrollmentYear}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="enrollmentPeriod">Periodo:</label>
-        <input
-          type="text"
-          id="enrollmentPeriod"
-          name="enrollmentPeriod"
-          value={formData.enrollmentPeriod}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="status">Estado:</label>
-        <select
-          id="status"
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          required
+    return (
+        <Form
+            form={form}
+            layout="vertical"
+            onFinish={handleSubmit}
+            className="enrollment-form"
         >
-          <option value="A">Activo</option>
-          <option value="I">Inactivo</option>
-        </select>
-      </div>
+            <Row gutter={16}>
+                <Col span={12}>
+                    <Form.Item
+                        name="classroomId"
+                        label="ID de Aula"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el ID del aula' },
+                            { pattern: /^\d+$/, message: 'El ID del aula debe ser numérico' }
+                        ]}
+                    >
+                        <Input prefix={<BookOutlined />} placeholder="Ingrese el ID del aula" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
+                        name="studentId"
+                        label="ID de Estudiante"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el ID del estudiante' },
+                            { pattern: /^[a-zA-Z0-9-]+$/, message: 'ID de estudiante inválido' }
+                        ]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Ingrese el ID del estudiante" />
+                    </Form.Item>
+                </Col>
+            </Row>
 
-      <div className="form-buttons">
-        <button type="submit" className="submit-button">
-          {initialData ? 'Actualizar' : 'Crear'}
-        </button>
-        <button type="button" onClick={onCancel} className="cancel-button">
-          Cancelar
-        </button>
-      </div>
-    </form>
-  );
-}
+            <Row gutter={16}>
+                <Col span={12}>
+                    <Form.Item
+                        name="enrollmentDate"
+                        label="Fecha de Matrícula"
+                        rules={[{ required: true, message: 'Por favor seleccione la fecha de matrícula' }]}
+                    >
+                        <DatePicker 
+                            style={{ width: '100%' }} 
+                            placeholder="Seleccione la fecha"
+                            prefix={<CalendarOutlined />}
+                            disabledDate={(current) => current && current > moment().endOf('day')}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
+                        name="enrollmentYear"
+                        label="Año de Matrícula"
+                        rules={[{ required: true, message: 'Por favor seleccione el año de matrícula' }]}
+                    >
+                        <Select placeholder="Seleccione el año">
+                            {years.map(year => (
+                                <Option key={year} value={year.toString()}>{year}</Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
+
+            <Form.Item
+                name="enrollmentPeriod"
+                label="Periodo de Matrícula"
+                rules={[{ required: true, message: 'Por favor seleccione el periodo de matrícula' }]}
+            >
+                <Select placeholder="Seleccione el periodo">
+                    {years.map(year => (
+                        <React.Fragment key={year}>
+                            <Option value={`${year}-1`}>{year}-1</Option>
+                            <Option value={`${year}-2`}>{year}-2</Option>
+                        </React.Fragment>
+                    ))}
+                </Select>
+            </Form.Item>
+
+            <Form.Item>
+                <Space>
+                    <Button type="primary" htmlType="submit">
+                        {initialValues ? 'Actualizar' : 'Crear'}
+                    </Button>
+                    <Button onClick={onCancel}>
+                        Cancelar
+                    </Button>
+                </Space>
+            </Form.Item>
+        </Form>
+    );
+};
 
 export default EnrollmentForm;
