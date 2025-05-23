@@ -1,64 +1,64 @@
-/* Variables de color - Nueva paleta moderna */
+/* Variables de color - Nueva paleta clara y educativa */
 :root {
   /* Colores de fondo */
-  --dark-bg: #0f1117;
-  --dark-surface: #151821;
-  --dark-input: #1c1f2e;
-  --dark-border: #2a2f42;
+  --dark-bg: #ffffff;
+  --dark-surface: #ffffff;
+  --dark-input: #f8fafc;
+  --dark-border: #e5e7eb;
   
   /* Textos */
-  --dark-text: #ffffff;
-  --dark-text-secondary: #94a3b8;
+  --dark-text: #374151;
+  --dark-text-secondary: #6b7280;
   
   /* Colores primarios */
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --primary-focus: rgba(59, 130, 246, 0.2);
+  --primary: #4b9aff;
+  --primary-hover: #3d8df0;
+  --primary-focus: rgba(75, 154, 255, 0.2);
   
   /* Estados */
-  --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.1);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.1);
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.1);
+  --success: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.1);
+  --warning: #fcd34d;
+  --warning-bg: rgba(252, 211, 77, 0.1);
+  --danger: #ff7f7f;
+  --danger-bg: rgba(255, 127, 127, 0.1);
   
   /* Género */
-  --male: #3b82f6;
-  --male-bg: rgba(59, 130, 246, 0.1);
-  --female: #ec4899;
-  --female-bg: rgba(236, 72, 153, 0.1);
+  --male: #4b9aff;
+  --male-bg: rgba(75, 154, 255, 0.1);
+  --female: #fb7bb0;
+  --female-bg: rgba(251, 123, 176, 0.1);
 }
 
 /* Estilos generales */
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Poppins', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--dark-bg);
   color: var(--dark-text);
 }
 
 /* Layout principal */
 .ant-layout {
-  background: #1a1f2d !important;
+  background: #ffffff !important;
 }
 
 .header {
-  background: #1a1f2d !important;
-  border-bottom: 1px solid #2d3548;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
   padding: 0 24px !important;
 }
 
 .ant-layout-sider {
-  background: #1a1f2d !important;
-  border-right: 1px solid #2d3548;
+  background: #ffffff !important;
+  border-right: 1px solid #e5e7eb;
 }
 
 /* Menú lateral */
 .ant-menu {
-  background: #1a1f2d !important;
+  background: #ffffff !important;
   border-right: none !important;
-  color: #8b949e;
+  color: #6b7280;
 }
 
 .ant-menu-item {
@@ -67,24 +67,24 @@ body {
 }
 
 .ant-menu-item:hover {
-  background-color: #2d3548 !important;
-  color: #ffffff !important;
+  background-color: #f7fafc !important;
+  color: var(--primary) !important;
 }
 
 .ant-menu-item-selected {
-  background-color: #2563eb !important;
-  color: #ffffff !important;
+  background-color: #ebf5ff !important;
+  color: var(--primary) !important;
 }
 
 .ant-menu-item-active {
-  color: #ffffff !important;
+  color: var(--primary) !important;
 }
 
 /* Contenido */
 .site-layout-background {
-  background: #1e2433 !important;
+  background: #ffffff !important;
   border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Botones */
@@ -111,24 +111,24 @@ body {
 
 /* Tablas */
 .ant-table {
-  background: var(--dark-surface) !important;
+  background: #ffffff !important;
   border-radius: 12px !important;
 }
 
 .ant-table-thead > tr > th {
-  background: var(--dark-input) !important;
+  background: #f8fafc !important;
   color: var(--dark-text) !important;
   font-weight: 600 !important;
-  border-bottom: 1px solid var(--dark-border) !important;
+  border-bottom: 1px solid #e5e7eb !important;
 }
 
 .ant-table-tbody > tr > td {
-  border-bottom: 1px solid var(--dark-border) !important;
+  border-bottom: 1px solid #e5e7eb !important;
   transition: all 0.3s ease !important;
 }
 
 .ant-table-tbody > tr:hover > td {
-  background: var(--dark-input) !important;
+  background: #f7fafc !important;
 }
 
 /* Estados y tags */
@@ -141,8 +141,8 @@ body {
 .ant-input,
 .ant-select-selector,
 .ant-picker {
-  background-color: var(--dark-input) !important;
-  border: 1px solid var(--dark-border) !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
   border-radius: 8px !important;
   color: var(--dark-text) !important;
   height: 40px !important;
@@ -153,7 +153,7 @@ body {
 .ant-select-selector:hover,
 .ant-picker:hover {
   border-color: var(--primary) !important;
-  background-color: var(--dark-input) !important;
+  background-color: #ffffff !important;
 }
 
 .ant-input:focus,
@@ -161,7 +161,7 @@ body {
 .ant-picker-focused {
   border-color: var(--primary) !important;
   box-shadow: 0 0 0 2px var(--primary-focus) !important;
-  background-color: var(--dark-input) !important;
+  background-color: #ffffff !important;
 }
 
 .ant-select-selection-placeholder,
@@ -178,14 +178,14 @@ body {
 /* Modal */
 .ant-modal-content,
 .ant-form {
-  background: var(--dark-surface) !important;
+  background: #ffffff !important;
   border-radius: 12px !important;
-  border: 1px solid var(--dark-border) !important;
+  border: 1px solid #e5e7eb !important;
 }
 
 .ant-modal-header {
-  background: var(--dark-surface) !important;
-  border-bottom: 1px solid var(--dark-border) !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
   padding: 20px 24px !important;
 }
 

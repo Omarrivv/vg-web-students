@@ -49,18 +49,12 @@ function App() {
     };
 
     const handleEnrollmentSubmit = async (values) => {
-        try {
-            if (editingItem) {
-                await enrollmentService.updateEnrollment(editingItem.id, values);
-                message.success('Matrícula actualizada correctamente');
-            } else {
-                await enrollmentService.createEnrollment(values);
-                message.success('Matrícula creada correctamente');
-            }
-            handleCancel();
-        } catch (error) {
-            message.error('Error al guardar la matrícula');
+        if (editingItem) {
+            await enrollmentService.updateEnrollment(editingItem.id, values);
+        } else {
+            await enrollmentService.createEnrollment(values);
         }
+        handleCancel();
     };
 
     const renderContent = () => {
@@ -123,14 +117,24 @@ function App() {
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Sider width={200} style={{ background: 'transparent' }}>
-                <div style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <h2 style={{ color: '#ffffff', margin: 0 }}>Sistema PRS</h2>
+            <Sider width={220} style={{
+                background: 'linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%)',
+                boxShadow: '2px 0 8px #e5e7eb'
+            }}>
+                <div style={{
+                    height: 80,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column'
+                }}>
+                    <img src="/comentario.png" alt="Logo" style={{ width: 40, marginBottom: 8 }} />
+                    <h2 style={{ color: '#374151', margin: 0, fontWeight: 700, fontSize: 20 }}>Sistema PRS</h2>
                 </div>
                 <Menu
                     mode="inline"
                     selectedKeys={[selectedKey]}
-                    style={{ height: 'calc(100% - 64px)' }}
+                    style={{ height: 'calc(100% - 80px)', borderRight: 0, fontSize: 16 }}
                     onSelect={({ key }) => setSelectedKey(key)}
                 >
                     <Menu.Item key="1" icon={<UserOutlined />}>
@@ -142,19 +146,28 @@ function App() {
                 </Menu>
             </Sider>
             <Layout>
-                <Content style={{ padding: '24px', minHeight: '100vh' }}>
-                    <div className="site-layout-background" style={{ padding: 24 }}>
+                <Content style={{ padding: '32px', minHeight: '100vh', background: '#f8fafc' }}>
+                    <div className="site-layout-background card" style={{ padding: 32, borderRadius: 16, boxShadow: '0 4px 24px #e5e7eb' }}>
+                        <h1 style={{ fontWeight: 700, fontSize: 28, marginBottom: 24 }}>
+                            {selectedKey === '1' ? 'Listado de Estudiantes' : 'Listado de Matrículas'}
+                        </h1>
                         {renderContent()}
                     </div>
                 </Content>
             </Layout>
             <Modal
-                title={modalContent === 'student' ? 'Estudiante' : 'Matrícula'}
-                visible={isModalVisible}
+                title={
+                    <span>
+                        {modalContent === 'student' ? <UserOutlined /> : <BookOutlined />}
+                        <span style={{ marginLeft: 8 }}>{modalContent === 'student' ? 'Estudiante' : 'Matrícula'}</span>
+                    </span>
+                }
+                open={isModalVisible}
                 onCancel={handleCancel}
                 footer={null}
                 width={600}
                 className="dark-modal"
+                style={{ borderRadius: 16 }}
             >
                 {renderModalContent()}
             </Modal>

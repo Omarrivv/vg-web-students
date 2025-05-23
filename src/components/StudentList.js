@@ -8,30 +8,32 @@ import {
     Space,
     Tag,
     Tooltip,
-    Card
+    Card,
+    Tabs
 } from 'antd';
 import {
     EditOutlined,
     DeleteOutlined,
     UndoOutlined,
     SearchOutlined,
-    UserOutlined,
-    IdcardOutlined
+    FilterOutlined,
+    BarChartOutlined
 } from '@ant-design/icons';
 import { showConfirmDialog, showSuccessAlert, showErrorAlert } from '../utils/alerts';
-import moment from 'moment';
+import StudentDashboard from './StudentDashboard';
 
 const { Option } = Select;
+const { TabPane } = Tabs;
 
 const StudentList = ({ onEdit }) => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [searchText, setSearchText] = useState('');
     const [filters, setFilters] = useState({
         status: 'A',
         gender: '',
-        institutionId: ''
+        searchField: 'name' // nombre, documento, email
     });
-    const [searchText, setSearchText] = useState('');
 
     const loadStudents = async () => {
         try {
@@ -88,55 +90,52 @@ const StudentList = ({ onEdit }) => {
             title: 'Nombre',
             dataIndex: 'firstName',
             key: 'firstName',
-            render: (text, record) => (
-                <Space>
-                    <UserOutlined style={{ color: '#2563eb' }} />
-                    <span style={{ fontWeight: 500 }}>{`${record.firstName} ${record.lastName}`}</span>
-                </Space>
-            ),
+            render: (text, record) => `${record.firstName} ${record.lastName}`,
+            filteredValue: filters.searchField === 'name' ? [searchText] : null,
+            onFilter: (value, record) => 
+                `${record.firstName} ${record.lastName}`
+                    .toLowerCase()
+                    .includes(value.toLowerCase()),
         },
         {
             title: 'Documento',
-            dataIndex: 'documentNumber',
-            key: 'documentNumber',
-            render: (text, record) => (
-                <Space>
-                    <IdcardOutlined style={{ color: '#64748b' }} />
-                    <Tooltip title={`${record.documentType}: ${text}`}>
-                        <span>{text}</span>
-                    </Tooltip>
-                </Space>
-            ),
+            dataIndex: 'dni',
+            key: 'dni',
+            filteredValue: filters.searchField === 'document' ? [searchText] : null,
+            onFilter: (value, record) => 
+                record.dni?.toLowerCase().includes(value.toLowerCase()),
         },
         {
             title: 'Género',
             dataIndex: 'gender',
             key: 'gender',
             render: (gender) => (
-                <Tag color={gender === 'M' ? '#2563eb' : '#db2777'}>
+                <Tag color={gender === 'M' ? '#1890ff' : '#f759ab'}>
                     {gender === 'M' ? 'Masculino' : 'Femenino'}
                 </Tag>
             ),
+            filteredValue: filters.gender ? [filters.gender] : null,
+            onFilter: (value, record) => record.gender === value,
         },
         {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
-            render: (email) => (
-                <a href={`mailto:${email}`} style={{ color: '#2563eb' }}>
-                    {email}
-                </a>
-            ),
+            filteredValue: filters.searchField === 'email' ? [searchText] : null,
+            onFilter: (value, record) => 
+                record.email?.toLowerCase().includes(value.toLowerCase()),
         },
         {
             title: 'Estado',
             dataIndex: 'status',
             key: 'status',
             render: (status) => (
-                <Tag color={status === 'A' ? '#22c55e' : '#ef4444'}>
+                <Tag color={status === 'A' ? '#52c41a' : '#ff4d4f'}>
                     {status === 'A' ? 'Activo' : 'Inactivo'}
                 </Tag>
             ),
+            filteredValue: filters.status ? [filters.status] : null,
+            onFilter: (value, record) => record.status === value,
         },
         {
             title: 'Acciones',
@@ -177,66 +176,76 @@ const StudentList = ({ onEdit }) => {
         setFilters(prev => ({ ...prev, [key]: value }));
     };
 
-    const filteredStudents = students.filter(student => {
-        const matchesSearch = searchText === '' || 
-            student.firstName.toLowerCase().includes(searchText.toLowerCase()) ||
-            student.lastName.toLowerCase().includes(searchText.toLowerCase()) ||
-            student.documentNumber.includes(searchText);
-        
-        const matchesStatus = filters.status === '' || student.status === filters.status;
-        const matchesGender = filters.gender === '' || student.gender === filters.gender;
-        const matchesInstitution = filters.institutionId === '' || student.institutionId === filters.institutionId;
-
-        return matchesSearch && matchesStatus && matchesGender && matchesInstitution;
-    });
-
     return (
-        <Card bordered={false}>
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
-                <Space wrap>
-                    <Input
-                        placeholder="Buscar estudiante..."
-                        prefix={<SearchOutlined style={{ color: '#64748b' }} />}
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                        style={{ width: 200 }}
-                        allowClear
-                    />
-                    <Select
-                        placeholder="Estado"
-                        value={filters.status}
-                        onChange={(value) => handleFilterChange('status', value)}
-                        style={{ width: 120 }}
-                    >
-                        <Option value="">Todos</Option>
-                        <Option value="A">Activo</Option>
-                        <Option value="I">Inactivo</Option>
-                    </Select>
-                    <Select
-                        placeholder="Género"
-                        value={filters.gender}
-                        onChange={(value) => handleFilterChange('gender', value)}
-                        style={{ width: 120 }}
-                    >
-                        <Option value="">Todos</Option>
-                        <Option value="M">Masculino</Option>
-                        <Option value="F">Femenino</Option>
-                    </Select>
-                </Space>
+        <Card bordered={false} className="student-list-card">
+            <Tabs defaultActiveKey="list">
+                <TabPane 
+                    tab={<span><FilterOutlined />Lista y Filtros</span>}
+                    key="list"
+                >
+                    <Space direction="vertical" style={{ width: '100%' }} size="large">
+                        <Space wrap className="filter-container">
+                            <Input
+                                placeholder="Buscar..."
+                                value={searchText}
+                                onChange={e => setSearchText(e.target.value)}
+                                prefix={<SearchOutlined />}
+                                style={{ width: 200 }}
+                            />
+                            <Select
+                                placeholder="Buscar por"
+                                value={filters.searchField}
+                                onChange={(value) => handleFilterChange('searchField', value)}
+                                style={{ width: 150 }}
+                            >
+                                <Option value="name">Nombre</Option>
+                                <Option value="document">Documento</Option>
+                                <Option value="email">Email</Option>
+                            </Select>
+                            <Select
+                                placeholder="Estado"
+                                value={filters.status}
+                                onChange={(value) => handleFilterChange('status', value)}
+                                style={{ width: 120 }}
+                            >
+                                <Option value="">Todos</Option>
+                                <Option value="A">Activo</Option>
+                                <Option value="I">Inactivo</Option>
+                            </Select>
+                            <Select
+                                placeholder="Género"
+                                value={filters.gender}
+                                onChange={(value) => handleFilterChange('gender', value)}
+                                style={{ width: 120 }}
+                            >
+                                <Option value="">Todos</Option>
+                                <Option value="M">Masculino</Option>
+                                <Option value="F">Femenino</Option>
+                            </Select>
+                        </Space>
 
-                <Table
-                    columns={columns}
-                    dataSource={filteredStudents}
-                    loading={loading}
-                    rowKey="id"
-                    pagination={{
-                        pageSize: 10,
-                        showSizeChanger: true,
-                        showTotal: (total) => `Total: ${total} estudiantes`,
-                        showQuickJumper: true
-                    }}
-                />
-            </Space>
+                        <Table
+                            columns={columns}
+                            dataSource={students}
+                            loading={loading}
+                            rowKey="id"
+                            pagination={{
+                                pageSize: 10,
+                                showSizeChanger: true,
+                                showTotal: (total) => `Total: ${total} estudiantes`,
+                                showQuickJumper: true
+                            }}
+                            className="student-table"
+                        />
+                    </Space>
+                </TabPane>
+                <TabPane 
+                    tab={<span><BarChartOutlined />Dashboard</span>}
+                    key="dashboard"
+                >
+                    <StudentDashboard students={students} />
+                </TabPane>
+            </Tabs>
         </Card>
     );
 };

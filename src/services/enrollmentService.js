@@ -1,7 +1,7 @@
 import { apiClient } from '../config/api.config';
 
 export const enrollmentService = {
-    // Obtener todas las matrículas
+// Obtener todas las matrículas
     getAllEnrollments: async () => {
         try {
             const response = await apiClient.get('/classroom-students');
@@ -21,7 +21,7 @@ export const enrollmentService = {
         }
     },
 
-    // Crear matrícula
+// Crear matrícula
     createEnrollment: async (enrollmentData) => {
         try {
             const response = await apiClient.post('/classroom-students', enrollmentData);
@@ -31,7 +31,7 @@ export const enrollmentService = {
         }
     },
 
-    // Actualizar matrícula
+// Actualizar matrícula
     updateEnrollment: async (id, enrollmentData) => {
         try {
             const response = await apiClient.put(`/classroom-students/${id}`, enrollmentData);
@@ -41,7 +41,7 @@ export const enrollmentService = {
         }
     },
 
-    // Eliminar matrícula
+// Eliminar matrícula
     deleteEnrollment: async (id) => {
         try {
             const response = await apiClient.delete(`/classroom-students/${id}`);
@@ -61,7 +61,7 @@ export const enrollmentService = {
         }
     },
 
-    // Listar matrículas por estudiante
+// Listar matrículas por estudiante
     getEnrollmentsByStudent: async (studentId) => {
         try {
             const response = await apiClient.get(`/classroom-students/student/${studentId}`);
@@ -71,7 +71,7 @@ export const enrollmentService = {
         }
     },
 
-    // Listar matrículas por aula
+// Listar matrículas por aula
     getEnrollmentsByClassroom: async (classroomId) => {
         try {
             const response = await apiClient.get(`/classroom-students/classroom/${classroomId}`);
@@ -81,7 +81,7 @@ export const enrollmentService = {
         }
     },
 
-    // Listar matrículas por estado
+// Listar matrículas por estado
     getEnrollmentsByStatus: async (status) => {
         try {
             const response = await apiClient.get(`/classroom-students/status/${status}`);
@@ -91,7 +91,7 @@ export const enrollmentService = {
         }
     },
 
-    // Listar matrículas por año
+// Listar matrículas por año
     getEnrollmentsByYear: async (year) => {
         try {
             const response = await apiClient.get(`/classroom-students/year/${year}`);
@@ -101,7 +101,7 @@ export const enrollmentService = {
         }
     },
 
-    // Listar matrículas por periodo
+// Listar matrículas por periodo
     getEnrollmentsByPeriod: async (period) => {
         try {
             const response = await apiClient.get(`/classroom-students/period/${period}`);
@@ -111,7 +111,7 @@ export const enrollmentService = {
         }
     },
 
-    // Listar matrículas por estudiante y estado
+// Listar matrículas por estudiante y estado
     getEnrollmentsByStudentAndStatus: async (studentId, status) => {
         try {
             const response = await apiClient.get(`/classroom-students/student/${studentId}/status/${status}`);
@@ -121,7 +121,7 @@ export const enrollmentService = {
         }
     },
 
-    // Listar matrículas por aula y estado
+// Listar matrículas por aula y estado
     getEnrollmentsByClassroomAndStatus: async (classroomId, status) => {
         try {
             const response = await apiClient.get(`/classroom-students/classroom/${classroomId}/status/${status}`);

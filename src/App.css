@@ -1,22 +1,28 @@
 :root {
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
-  --secondary-color: #64748b;
-  --success-color: #22c55e;
-  --danger-color: #ef4444;
-  --warning-color: #f59e0b;
-  --background-color: #f8fafc;
-  --surface-color: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --border-color: #e2e8f0;
+  --primary-color: #4b9aff; /* Azul cielo */
+  --primary-hover: #3d8df0;
+  --secondary-color: #a0aec0;
+  --success-color: #4ade80; /* Verde menta */
+  --danger-color: #ff7f7f; /* Rojo coral claro */
+  --warning-color: #fcd34d; /* Amarillo suave */
+  --background-color: #f8fafc; /* Gris muy claro */
+  --surface-color: #ffffff; /* Blanco */
+  --text-primary: #374151; /* Gris oscuro para texto principal */
+  --text-secondary: #6b7280; /* Gris medio para texto secundario */
+  --border-color: #e5e7eb; /* Gris claro para bordes */
+  --sidebar-bg: #ffffff; /* Fondo blanco para sidebar */
+  --sidebar-active: #ebf5ff; /* Azul muy claro para elementos activos del sidebar */
+  --male-color: #bae6fd; /* Azul claro para masculino */
+  --female-color: #fbcfe8; /* Rosa suave para femenino */
+  --active-color: #a7f3d0; /* Verde menta para activo */
+  --inactive-color: #fecaca; /* Rojo claro para inactivo */
 }
 
 /* Estilos generales */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Poppins', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--background-color);
   color: var(--text-primary);
 }
@@ -26,7 +32,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0 24px;
-  background: linear-gradient(to right, #1e40af, #1d4ed8);
+  background: linear-gradient(to right, #4b9aff, #3d8df0);
   height: 64px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -42,7 +48,7 @@ body {
 .site-layout-background {
   background: var(--surface-color);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   margin: 24px;
   padding: 24px;
   min-height: calc(100vh - 112px);
@@ -51,7 +57,7 @@ body {
 /* Menú lateral */
 .ant-menu {
   border-right: none !important;
-  background: transparent;
+  background: var(--sidebar-bg);
 }
 
 .ant-menu-item {
@@ -60,15 +66,16 @@ body {
   border-radius: 8px;
   height: 40px !important;
   line-height: 40px !important;
+  color: var(--text-secondary) !important;
 }
 
 .ant-menu-item:hover {
-  background-color: #e2e8f0 !important;
+  background-color: #f7fafc !important;
   color: var(--primary-color) !important;
 }
 
 .ant-menu-item-selected {
-  background-color: #dbeafe !important;
+  background-color: var(--sidebar-active) !important;
   color: var(--primary-color) !important;
 }
 
@@ -88,6 +95,7 @@ body {
 
 .ant-table-tbody > tr > td {
   padding: 16px !important;
+  color: var(--text-secondary);
 }
 
 .ant-table-row:hover > td {
@@ -145,27 +153,27 @@ body {
 .ant-select-selector,
 .ant-picker,
 .ant-input-affix-wrapper {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
-  color: #ffffff !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
   border-radius: 8px !important;
 }
 
 .ant-select-selector {
-  background-color: #1c1f2e !important;
+  background-color: var(--surface-color) !important;
 }
 
 .ant-select-selection-placeholder,
 .ant-input::placeholder {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
 }
 
 .ant-picker-input > input {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .ant-form-item-label > label {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 /* Estilos para los iconos en los inputs */
@@ -173,7 +181,7 @@ body {
 .ant-input-suffix,
 .ant-select-arrow,
 .ant-picker-suffix {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
 }
 
 /* Estilos hover y focus */
@@ -181,45 +189,45 @@ body {
 .ant-select-selector:hover,
 .ant-picker:hover,
 .ant-input-affix-wrapper:hover {
-  border-color: #3b82f6 !important;
-  background-color: #1c1f2e !important;
+  border-color: var(--primary-color) !important;
+  background-color: var(--surface-color) !important;
 }
 
 .ant-input:focus,
 .ant-select-focused .ant-select-selector,
 .ant-picker-focused,
 .ant-input-affix-wrapper-focused {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
-  background-color: #1c1f2e !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(75, 154, 255, 0.2) !important;
+  background-color: var(--surface-color) !important;
 }
 
 /* Dropdown del select */
 .ant-select-dropdown {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 .ant-select-item {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .ant-select-item-option-active {
-  background-color: #252b3b !important;
+  background-color: #f7fafc !important;
 }
 
 .ant-select-item-option-selected {
-  background-color: #3b82f6 !important;
-  color: #ffffff !important;
+  background-color: var(--primary-color) !important;
+  color: white !important;
 }
 
-/* Modal con fondo oscuro */
+/* Modal con fondo claro */
 .modal-content {
-  background-color: #151821 !important;
+  background-color: var(--surface-color) !important;
 }
 
 .modal-content h2 {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 /* Tags */
@@ -230,15 +238,15 @@ body {
 }
 
 .ant-tag-success {
-  background: #dcfce7;
-  border-color: #86efac;
-  color: #166534;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
 }
 
 .ant-tag-error {
-  background: #fee2e2;
-  border-color: #fca5a5;
-  color: #991b1b;
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
 }
 
 /* Modal */
@@ -276,7 +284,7 @@ body {
 
   .header h1 {
     font-size: 1.2rem;
-  }
+}
 
   .site-layout-background {
     margin: 16px;
@@ -290,7 +298,7 @@ body {
   .ant-table-thead > tr > th,
   .ant-table-tbody > tr > td {
     padding: 12px 8px !important;
-  }
+}
 
   .student-form,
   .enrollment-form {
@@ -308,89 +316,20 @@ body {
   .ant-btn {
     padding: 0 12px;
     font-size: 14px;
-  }
+}
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-color: #0f172a;
-    --surface-color: #1e293b;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --border-color: #334155;
-  }
-
-  body {
-    background-color: var(--background-color);
-  }
-
-  .ant-table {
-    background: var(--surface-color);
-  }
-
-  .ant-table-thead > tr > th {
-    background: #1e293b !important;
-    color: var(--text-primary) !important;
-  }
-
-  .ant-table-tbody > tr > td {
-    color: var(--text-secondary);
-  }
-
-  .ant-table-row:hover > td {
-    background-color: #334155 !important;
-  }
-
-  .ant-input,
-  .ant-select-selector,
-  .ant-picker {
-    background-color: var(--surface-color) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-primary) !important;
-  }
-
-  .ant-select-selection-item {
-    color: var(--text-primary) !important;
-  }
-
-  .ant-modal-content,
-  .ant-modal-header {
-    background-color: var(--surface-color);
-  }
-
-  .ant-modal-title {
-    color: var(--text-primary);
-  }
-
-  .ant-form-item-label > label {
-    color: var(--text-primary) !important;
-  }
-
-  .ant-menu {
-    background: transparent !important;
-  }
-
-  .ant-menu-item {
-    color: var(--text-secondary) !important;
-  }
-
-  .ant-menu-item:hover {
-    background-color: #334155 !important;
-  }
-
-  .ant-menu-item-selected {
-    background-color: #1e40af !important;
-    color: white !important;
-  }
-}
+/* Eliminar los estilos dark mode que no necesitamos */
+/* @media (prefers-color-scheme: dark) {
+  // Se elimina todo este bloque ya que queremos un tema claro
+} */
 
 .action-button {
     background: transparent;
-    border: 1px solid #2d3548;
-    color: #8b949e;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
     padding: 4px 8px;
-    border-radius: 4px;
+  border-radius: 4px;
     cursor: pointer;
     margin: 0 4px;
     display: inline-flex;
@@ -399,31 +338,31 @@ body {
 }
 
 .action-button:hover {
-    background: #2d3548;
-    color: #ffffff;
+    background: #f7fafc;
+    color: var(--text-primary);
 }
 
 .action-button.edit {
-    border-color: #2563eb;
-    color: #2563eb;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .action-button.edit:hover {
-    background: rgba(37, 99, 235, 0.1);
+    background: rgba(75, 154, 255, 0.1);
 }
 
 .action-button.delete {
-    border-color: #dc2626;
-    color: #dc2626;
+    border-color: var(--danger-color);
+    color: var(--danger-color);
 }
 
 .action-button.delete:hover {
-    background: rgba(220, 38, 38, 0.1);
+    background: rgba(255, 127, 127, 0.1);
 }
 
 /* Estilos para el botón de nuevo */
 .ant-btn-primary {
-    background: #2563eb !important;
+    background: var(--primary-color) !important;
     border: none !important;
     height: 40px !important;
     padding: 0 20px !important;
@@ -434,7 +373,7 @@ body {
 }
 
 .ant-btn-primary:hover {
-    background: #1d4ed8 !important;
+    background: var(--primary-hover) !important;
 }
 
 /* Estilos para los filtros */
@@ -442,9 +381,10 @@ body {
     display: flex;
     gap: 16px;
     margin-bottom: 24px;
-    background: #252b3b;
+    background: #f7fafc;
     padding: 16px;
     border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .filter-select {
@@ -454,25 +394,26 @@ body {
 /* Estilos para el estado */
 .status-tag {
     padding: 4px 8px;
-    border-radius: 4px;
+  border-radius: 4px;
     font-size: 12px;
     font-weight: 500;
 }
 
 .status-tag.active {
-    background: #059669;
-    color: #ffffff;
+    background: var(--active-color);
+    color: #065f46;
 }
 
 .status-tag.inactive {
-    background: #dc2626;
-    color: #ffffff;
+    background: var(--inactive-color);
+    color: #b91c1c;
 }
 
 /* Estilos para la tabla */
 .ant-table-wrapper {
     border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .ant-table-cell {
@@ -487,25 +428,25 @@ body {
 
 /* Estilos para el modal */
 .dark-modal .ant-modal-content {
-    background: #1e2433;
+    background: var(--surface-color);
     border-radius: 8px;
 }
 
 .dark-modal .ant-modal-header {
-    background: #1e2433;
-    border-bottom: 1px solid #2d3548;
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .dark-modal .ant-modal-title {
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .dark-modal .ant-modal-close {
-    color: #8b949e;
+    color: var(--text-secondary);
 }
 
 .dark-modal .ant-modal-close:hover {
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 /* Modal */
@@ -515,7 +456,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -523,7 +464,7 @@ body {
 }
 
 .modal-content {
-  background: var(--dark-surface);
+  background: var(--surface-color);
   border-radius: 12px;
   padding: 24px;
   position: relative;
@@ -531,7 +472,7 @@ body {
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  border: 1px solid var(--dark-border);
+  border: 1px solid var(--border-color);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
@@ -541,7 +482,7 @@ body {
   right: 16px;
   background: transparent;
   border: none;
-  color: var(--dark-text-secondary);
+  color: var(--text-secondary);
   font-size: 24px;
   cursor: pointer;
   width: 32px;
@@ -554,12 +495,12 @@ body {
 }
 
 .modal-close-button:hover {
-  background: var(--dark-input);
-  color: var(--dark-text);
+  background: #f7fafc;
+  color: var(--text-primary);
 }
 
 .modal-content h2 {
-  color: var(--dark-text);
+  color: var(--text-primary);
   font-size: 20px;
   font-weight: 600;
   margin: 0 0 24px 0;
@@ -568,9 +509,10 @@ body {
 
 /* Estilos del formulario de estudiante */
 .student-form {
-  background-color: #151821;
+  background-color: var(--surface-color);
   border-radius: 12px;
   padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Campos del formulario */
@@ -580,56 +522,56 @@ body {
 
 /* Inputs con iconos */
 .ant-input-affix-wrapper {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
   height: 40px;
   padding: 4px 12px;
 }
 
 .ant-input-affix-wrapper input.ant-input {
   background-color: transparent !important;
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .ant-input-affix-wrapper:hover,
 .ant-input-affix-wrapper-focused {
-  border-color: #3b82f6 !important;
+  border-color: var(--primary-color) !important;
 }
 
 /* Inputs de texto y número */
 .ant-input {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
-  color: #ffffff !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
   height: 40px;
 }
 
 /* Select (dropdowns) */
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
   height: 40px !important;
   padding: 4px 12px !important;
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .ant-select-selection-placeholder {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
 }
 
 /* DatePicker */
 .ant-picker {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
   height: 40px;
 }
 
 .ant-picker-input > input {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .ant-picker-suffix {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
 }
 
 /* Labels requeridos */
@@ -640,7 +582,7 @@ body {
 
 /* Títulos del formulario */
 .ant-form-item-label > label {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
   font-weight: 500;
 }
 
@@ -648,13 +590,13 @@ body {
 input::placeholder,
 .ant-select-selection-placeholder,
 .ant-picker-input > input::placeholder {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
   opacity: 0.8;
 }
 
 /* Estilos para los iconos en los inputs */
 .ant-input-prefix {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
   margin-right: 8px;
 }
 
@@ -666,14 +608,14 @@ input::placeholder,
 }
 
 .ant-form-item-control-input-content .ant-btn-primary {
-  background: #3b82f6 !important;
+  background: var(--primary-color) !important;
   border: none;
 }
 
 .ant-form-item-control-input-content .ant-btn-default {
-  background: transparent !important;
-  border: 1px solid #2d3548;
-  color: #ffffff;
+  background: var(--surface-color) !important;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 /* Mensajes de error */
@@ -682,31 +624,31 @@ input::placeholder,
   margin-top: 4px;
 }
 
-/* Estilos específicos para el formulario en modo oscuro */
+/* Estilos específicos para el formulario */
 .dark-modal .ant-input,
 .dark-modal .ant-select-selector,
 .dark-modal .ant-picker,
 .dark-modal .ant-input-affix-wrapper {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
-  color: #ffffff !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
 }
 
 .dark-modal .ant-select-selector {
-  background-color: #1c1f2e !important;
+  background-color: var(--surface-color) !important;
   height: 40px !important;
   padding: 0 12px !important;
   display: flex !important;
   align-items: center !important;
-}
+  }
 
 .dark-modal .ant-select-selection-item {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
   line-height: 38px !important;
 }
 
 .dark-modal .ant-select-selection-placeholder {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
   line-height: 38px !important;
 }
 
@@ -716,7 +658,7 @@ input::placeholder,
 }
 
 .dark-modal .ant-input::placeholder {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
 }
 
 .dark-modal .ant-picker {
@@ -724,15 +666,15 @@ input::placeholder,
 }
 
 .dark-modal .ant-picker-input > input {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .dark-modal .ant-picker-suffix {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
 }
 
 .dark-modal .ant-form-item-label > label {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .dark-modal .ant-input-affix-wrapper {
@@ -742,11 +684,11 @@ input::placeholder,
 
 .dark-modal .ant-input-affix-wrapper > input.ant-input {
   background-color: transparent !important;
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .dark-modal .ant-input-prefix {
-  color: #8b949e !important;
+  color: var(--text-secondary) !important;
   margin-right: 8px !important;
 }
 
@@ -755,37 +697,37 @@ input::placeholder,
 .dark-modal .ant-select-selector:hover,
 .dark-modal .ant-picker:hover,
 .dark-modal .ant-input-affix-wrapper:hover {
-  border-color: #3b82f6 !important;
-}
+  border-color: var(--primary-color) !important;
+  }
 
 .dark-modal .ant-input:focus,
 .dark-modal .ant-select-focused .ant-select-selector,
 .dark-modal .ant-picker-focused,
 .dark-modal .ant-input-affix-wrapper-focused {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(75, 154, 255, 0.1) !important;
 }
 
-/* Dropdown del select en modo oscuro */
+/* Dropdown del select */
 .ant-select-dropdown {
-  background-color: #1c1f2e !important;
-  border: 1px solid #2d3548 !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
   padding: 4px !important;
 }
 
 .ant-select-item {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
   padding: 8px 12px !important;
   border-radius: 4px !important;
-}
+  }
 
 .ant-select-item-option-active {
-  background-color: #252b3b !important;
+  background-color: #f7fafc !important;
 }
 
 .ant-select-item-option-selected {
-  background-color: #3b82f6 !important;
-  color: #ffffff !important;
+  background-color: var(--primary-color) !important;
+  color: white !important;
 }
 
 /* Botones en el formulario */
@@ -796,13 +738,94 @@ input::placeholder,
 }
 
 .dark-modal .ant-btn-primary {
-  background: #3b82f6 !important;
+  background: var(--primary-color) !important;
   border: none !important;
-  color: #ffffff !important;
+  color: white !important;
 }
 
 .dark-modal .ant-btn-default {
-  background: transparent !important;
-  border: 1px solid #2d3548 !important;
-  color: #8b949e !important;
+  background: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+/* Estilos para género */
+.gender-tag.male {
+  background-color: var(--male-color);
+  color: #0c4a6e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.gender-tag.female {
+  background-color: var(--female-color);
+  color: #9d174d;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.site-layout-background.card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px #e5e7eb;
+}
+
+.ant-menu-item-selected {
+    background: #e0e7ff !important;
+    border-radius: 8px !important;
+    color: #1d4ed8 !important;
+}
+
+.ant-btn-primary {
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.ant-modal-content {
+    border-radius: 16px !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+    background: #f1f5f9 !important;
+}
+
+.badge-masculino {
+    background: #2563eb;
+    color: #fff;
+    border-radius: 8px;
+    padding: 2px 12px;
+    font-weight: 500;
+}
+
+.badge-femenino {
+    background: #db2777;
+    color: #fff;
+    border-radius: 8px;
+    padding: 2px 12px;
+    font-weight: 500;
+}
+
+.badge-activo {
+    background: #22c55e;
+    color: #fff;
+    border-radius: 8px;
+    padding: 2px 12px;
+    font-weight: 500;
+}
+
+.badge-inactivo {
+    background: #ef4444;
+    color: #fff;
+    border-radius: 8px;
+    padding: 2px 12px;
+    font-weight: 500;
+}
+
+body, .ant-typography {
+    font-family: 'Inter', 'Roboto', Arial, sans-serif;
 }

@@ -1,7 +1,7 @@
 import { apiClient } from '../config/api.config';
 
 export const studentService = {
-    // Obtener todos los estudiantes
+// Obtener todos los estudiantes
     getAllStudents: async () => {
         try {
             const response = await apiClient.get('/students');
@@ -11,7 +11,7 @@ export const studentService = {
         }
     },
 
-    // Obtener estudiante por ID
+// Obtener estudiante por ID
     getStudentById: async (id) => {
         try {
             const response = await apiClient.get(`/students/${id}`);
@@ -21,7 +21,7 @@ export const studentService = {
         }
     },
 
-    // Crear estudiante
+// Crear estudiante
     createStudent: async (studentData) => {
         try {
             const response = await apiClient.post('/students', studentData);
@@ -31,7 +31,7 @@ export const studentService = {
         }
     },
 
-    // Actualizar estudiante
+// Actualizar estudiante
     updateStudent: async (id, studentData) => {
         try {
             const response = await apiClient.put(`/students/${id}`, studentData);
@@ -61,7 +61,7 @@ export const studentService = {
         }
     },
 
-    // Listar estudiantes por institución
+// Listar estudiantes por institución
     getStudentsByInstitution: async (institutionId) => {
         try {
             const response = await apiClient.get(`/students/institution/${institutionId}`);
@@ -71,7 +71,7 @@ export const studentService = {
         }
     },
 
-    // Listar estudiantes por estado
+// Listar estudiantes por estado
     getStudentsByStatus: async (status) => {
         try {
             const response = await apiClient.get(`/students/status/${status}`);
@@ -81,7 +81,7 @@ export const studentService = {
         }
     },
 
-    // Listar estudiantes por género
+// Listar estudiantes por género
     getStudentsByGender: async (gender) => {
         try {
             const response = await apiClient.get(`/students/gender/${gender}`);

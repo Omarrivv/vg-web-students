@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Select, DatePicker, Button, Space, Row, Col } from 'antd';
 import { BookOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
+import { studentService } from '../services/studentService';
 
 const { Option } = Select;
 
 const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
     const [form] = Form.useForm();
+    const [students, setStudents] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (initialValues) {
@@ -20,6 +23,23 @@ const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
         }
     }, [initialValues, form]);
 
+    // Cargar estudiantes al montar el componente
+    useEffect(() => {
+        loadStudents();
+    }, []);
+
+    const loadStudents = async () => {
+        try {
+            setLoading(true);
+            const data = await studentService.getAllStudents();
+            setStudents(data.filter(student => student.status === 'A')); // Solo estudiantes activos
+        } catch (error) {
+            showErrorAlert('Error al cargar la lista de estudiantes');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleSubmit = async (values) => {
         try {
             const formattedValues = {
@@ -31,12 +51,26 @@ const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
             form.resetFields();
             showSuccessAlert('Matrícula guardada correctamente');
         } catch (error) {
-            showErrorAlert('Error al guardar la matrícula');
+            // Validación para matrícula duplicada (error 409)
+            if (error.response && error.response.status === 409) {
+                showErrorAlert('El estudiante ya tiene una matrícula activa. No se puede crear una nueva.');
+            } else {
+                showErrorAlert('Error al guardar la matrícula. Intenta nuevamente.');
+            }
         }
     };
 
     const currentYear = moment().year();
     const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+
+    // Función para filtrar estudiantes en el select
+    const filterStudents = (input, option) => {
+        const searchTerm = input.toLowerCase();
+        return (
+            option.children.toLowerCase().includes(searchTerm) ||
+            option.value.toLowerCase().includes(searchTerm)
+        );
+    };
 
     return (
         <Form
@@ -61,13 +95,25 @@ const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
                 <Col span={12}>
                     <Form.Item
                         name="studentId"
-                        label="ID de Estudiante"
+                        label="Estudiante"
                         rules={[
-                            { required: true, message: 'Por favor ingrese el ID del estudiante' },
-                            { pattern: /^[a-zA-Z0-9-]+$/, message: 'ID de estudiante inválido' }
+                            { required: true, message: 'Por favor seleccione un estudiante' }
                         ]}
                     >
-                        <Input prefix={<UserOutlined />} placeholder="Ingrese el ID del estudiante" />
+                        <Select
+                            showSearch
+                            placeholder="Buscar estudiante..."
+                            optionFilterProp="children"
+                            loading={loading}
+                            filterOption={filterStudents}
+                            style={{ width: '100%' }}
+                        >
+                            {students.map(student => (
+                                <Option key={student.id} value={student.id}>
+                                    {`${student.firstName} ${student.lastName} - ${student.id}`}
+                                </Option>
+                            ))}
+                        </Select>
                     </Form.Item>
                 </Col>
             </Row>
