@@ -9,7 +9,15 @@ import {
     Tag,
     Tooltip,
     Card,
-    Tabs
+    Tabs,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    IconButton,
+    Modal
 } from 'antd';
 import {
     EditOutlined,
@@ -17,10 +25,15 @@ import {
     UndoOutlined,
     SearchOutlined,
     FilterOutlined,
-    BarChartOutlined
+    BarChartOutlined,
+    Visibility as VisibilityIcon,
+    Add as AddIcon,
+    EyeOutlined,
+    PlusOutlined
 } from '@ant-design/icons';
 import { showConfirmDialog, showSuccessAlert, showErrorAlert } from '../utils/alerts';
 import StudentDashboard from './StudentDashboard';
+import StudentDetail from './StudentDetail';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -28,12 +41,11 @@ const { TabPane } = Tabs;
 const StudentList = ({ onEdit }) => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [searchText, setSearchText] = useState('');
     const [filters, setFilters] = useState({
-        status: 'A',
-        gender: '',
-        searchField: 'name' // nombre, documento, email
+        search: '',
     });
+    const [selectedStudent, setSelectedStudent] = useState(null);
+    const [openDetail, setOpenDetail] = useState(false);
 
     const loadStudents = async () => {
         try {
@@ -85,168 +97,198 @@ const StudentList = ({ onEdit }) => {
         }
     };
 
+    const handleViewDetail = (student) => {
+        setSelectedStudent(student);
+        setOpenDetail(true);
+    };
+
+    const handleCloseDetail = () => {
+        setOpenDetail(false);
+        setSelectedStudent(null);
+    };
+
+    const filteredStudents = students.filter(student => {
+        const searchLower = filters.search.toLowerCase();
+        const fullName = `${student.firstName} ${student.lastName}`.toLowerCase();
+        const documentInfo = `${student.documentType}${student.documentNumber}`.toLowerCase();
+        return fullName.includes(searchLower) || documentInfo.includes(searchLower);
+    });
+
     const columns = [
         {
-            title: 'Nombre',
-            dataIndex: 'firstName',
-            key: 'firstName',
-            render: (text, record) => `${record.firstName} ${record.lastName}`,
-            filteredValue: filters.searchField === 'name' ? [searchText] : null,
-            onFilter: (value, record) => 
-                `${record.firstName} ${record.lastName}`
-                    .toLowerCase()
-                    .includes(value.toLowerCase()),
+            title: 'Nombre Completo',
+            key: 'fullName',
+            sorter: (a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`),
+            render: (_, record) => `${record.firstName} ${record.lastName}`,
         },
         {
             title: 'Documento',
-            dataIndex: 'dni',
-            key: 'dni',
-            filteredValue: filters.searchField === 'document' ? [searchText] : null,
-            onFilter: (value, record) => 
-                record.dni?.toLowerCase().includes(value.toLowerCase()),
+            key: 'document',
+            render: (_, record) => `${record.documentType}: ${record.documentNumber}`,
         },
         {
             title: 'Género',
-            dataIndex: 'gender',
             key: 'gender',
-            render: (gender) => (
-                <Tag color={gender === 'M' ? '#1890ff' : '#f759ab'}>
-                    {gender === 'M' ? 'Masculino' : 'Femenino'}
+            render: (_, record) => (
+                <Tag color={record.gender === 'M' ? '#1890ff' : '#ff69b4'}>
+                    {record.gender === 'M' ? 'Masculino' : 'Femenino'}
                 </Tag>
             ),
-            filteredValue: filters.gender ? [filters.gender] : null,
-            onFilter: (value, record) => record.gender === value,
         },
         {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
-            filteredValue: filters.searchField === 'email' ? [searchText] : null,
-            onFilter: (value, record) => 
-                record.email?.toLowerCase().includes(value.toLowerCase()),
+        },
+        {
+            title: 'Teléfono',
+            dataIndex: 'phone',
+            key: 'phone',
         },
         {
             title: 'Estado',
-            dataIndex: 'status',
             key: 'status',
-            render: (status) => (
-                <Tag color={status === 'A' ? '#52c41a' : '#ff4d4f'}>
-                    {status === 'A' ? 'Activo' : 'Inactivo'}
+            render: (_, record) => (
+                <Tag color={record.status === 'A' ? '#52c41a' : '#ff4d4f'}>
+                    {record.status === 'A' ? 'Activo' : 'Inactivo'}
                 </Tag>
             ),
-            filteredValue: filters.status ? [filters.status] : null,
-            onFilter: (value, record) => record.status === value,
         },
         {
             title: 'Acciones',
             key: 'actions',
             render: (_, record) => (
                 <Space>
-                    <Tooltip title="Editar">
-                        <Button
-                            icon={<EditOutlined />}
-                            onClick={() => onEdit(record)}
-                            type="primary"
-                            ghost
-                        />
-                    </Tooltip>
-                    {record.status === 'A' ? (
-                        <Tooltip title="Eliminar">
-                            <Button
-                                icon={<DeleteOutlined />}
-                                onClick={() => handleDelete(record.id)}
-                                danger
-                            />
-                        </Tooltip>
-                    ) : (
-                        <Tooltip title="Restaurar">
-                            <Button
-                                icon={<UndoOutlined />}
-                                onClick={() => handleRestore(record.id)}
-                                type="primary"
-                            />
-                        </Tooltip>
-                    )}
+                    <Button
+                        type="primary"
+                        icon={<EditOutlined />}
+                        onClick={() => onEdit(record)}
+                        className="action-button edit"
+                    />
+                    <Button
+                        type={record.status === 'A' ? 'default' : 'primary'}
+                        danger={record.status === 'A'}
+                        icon={record.status === 'A' ? <DeleteOutlined /> : <UndoOutlined />}
+                        onClick={() => record.status === 'A' ? handleDelete(record._id) : handleRestore(record._id)}
+                        className="action-button"
+                    />
+                    <Button
+                        type="primary"
+                        icon={<EyeOutlined />}
+                        onClick={() => handleViewDetail(record)}
+                        className="action-button view"
+                    />
                 </Space>
             ),
         },
     ];
 
-    const handleFilterChange = (key, value) => {
-        setFilters(prev => ({ ...prev, [key]: value }));
-    };
-
     return (
-        <Card bordered={false} className="student-list-card">
-            <Tabs defaultActiveKey="list">
-                <TabPane 
-                    tab={<span><FilterOutlined />Lista y Filtros</span>}
-                    key="list"
-                >
-                    <Space direction="vertical" style={{ width: '100%' }} size="large">
-                        <Space wrap className="filter-container">
-                            <Input
-                                placeholder="Buscar..."
-                                value={searchText}
-                                onChange={e => setSearchText(e.target.value)}
-                                prefix={<SearchOutlined />}
-                                style={{ width: 200 }}
-                            />
-                            <Select
-                                placeholder="Buscar por"
-                                value={filters.searchField}
-                                onChange={(value) => handleFilterChange('searchField', value)}
-                                style={{ width: 150 }}
+        <div className="student-list-container">
+            <Card bordered={false}>
+                <Tabs defaultActiveKey="list">
+                    <TabPane 
+                        tab={<span><FilterOutlined />Lista y Filtros</span>}
+                        key="list"
+                    >
+                        <div className="table-header">
+                            <div className="search-container">
+                                <Input
+                                    placeholder="Buscar por nombre o documento..."
+                                    prefix={<SearchOutlined />}
+                                    value={filters.search}
+                                    onChange={e => setFilters(prev => ({ ...prev, search: e.target.value }))}
+                                    className="search-input"
+                                />
+                            </div>
+                            <Button
+                                type="primary"
+                                icon={<PlusOutlined />}
+                                onClick={() => onEdit(null)}
+                                className="add-button"
                             >
-                                <Option value="name">Nombre</Option>
-                                <Option value="document">Documento</Option>
-                                <Option value="email">Email</Option>
-                            </Select>
-                            <Select
-                                placeholder="Estado"
-                                value={filters.status}
-                                onChange={(value) => handleFilterChange('status', value)}
-                                style={{ width: 120 }}
-                            >
-                                <Option value="">Todos</Option>
-                                <Option value="A">Activo</Option>
-                                <Option value="I">Inactivo</Option>
-                            </Select>
-                            <Select
-                                placeholder="Género"
-                                value={filters.gender}
-                                onChange={(value) => handleFilterChange('gender', value)}
-                                style={{ width: 120 }}
-                            >
-                                <Option value="">Todos</Option>
-                                <Option value="M">Masculino</Option>
-                                <Option value="F">Femenino</Option>
-                            </Select>
-                        </Space>
+                                Agregar Estudiante
+                            </Button>
+                        </div>
 
                         <Table
                             columns={columns}
-                            dataSource={students}
+                            dataSource={filteredStudents}
                             loading={loading}
-                            rowKey="id"
+                            rowKey="_id"
                             pagination={{
                                 pageSize: 10,
                                 showSizeChanger: true,
-                                showTotal: (total) => `Total: ${total} estudiantes`,
+                                showTotal: total => `Total: ${total} estudiantes`,
                                 showQuickJumper: true
                             }}
-                            className="student-table"
+                            className="students-table"
                         />
-                    </Space>
-                </TabPane>
-                <TabPane 
-                    tab={<span><BarChartOutlined />Dashboard</span>}
-                    key="dashboard"
-                >
-                    <StudentDashboard students={students} />
-                </TabPane>
-            </Tabs>
-        </Card>
+                    </TabPane>
+                    <TabPane 
+                        tab={<span><BarChartOutlined />Dashboard</span>}
+                        key="dashboard"
+                    >
+                        <StudentDashboard students={students} />
+                    </TabPane>
+                </Tabs>
+            </Card>
+
+            <Modal
+                open={openDetail}
+                onCancel={handleCloseDetail}
+                width={800}
+                footer={null}
+                title="Detalle del Estudiante"
+            >
+                {selectedStudent && <StudentDetail student={selectedStudent} />}
+            </Modal>
+
+            <style jsx="true">{`
+                .student-list-container {
+                    padding: 24px;
+                }
+                .table-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 16px;
+                }
+                .search-container {
+                    flex: 1;
+                    max-width: 300px;
+                }
+                .search-input {
+                    width: 100%;
+                }
+                .add-button {
+                    margin-left: 16px;
+                }
+                .students-table {
+                    background: white;
+                    border-radius: 8px;
+                }
+                .action-button {
+                    border-radius: 4px;
+                }
+                .action-button.edit {
+                    background-color: #1890ff;
+                }
+                .action-button.view {
+                    background-color: #52c41a;
+                }
+                :global(.ant-table-thead > tr > th) {
+                    background: #fafafa;
+                    font-weight: 600;
+                }
+                :global(.ant-card) {
+                    border-radius: 8px;
+                }
+                :global(.ant-table-pagination) {
+                    margin: 16px 0;
+                }
+            `}</style>
+        </div>
     );
 };
 

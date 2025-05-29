@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Select, DatePicker, Button, Space, Row, Col } from 'antd';
-import { BookOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons';
+import { Form, Input, Select, DatePicker, Button, Space, Row, Col, Tooltip } from 'antd';
+import { BookOutlined, UserOutlined, CalendarOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
 import { studentService } from '../services/studentService';
@@ -40,6 +40,34 @@ const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
         }
     };
 
+    // Función para determinar el periodo basado en la fecha
+    const determineEnrollmentPeriod = (date) => {
+        if (!date) return null;
+        const month = date.month() + 1; // moment months son 0-based
+        const year = date.year();
+        return month >= 1 && month <= 6 ? `${year}-1` : `${year}-2`;
+    };
+
+    // Manejador para cuando cambia la fecha de matrícula
+    const handleDateChange = (date) => {
+        if (date) {
+            const year = date.year().toString();
+            const period = determineEnrollmentPeriod(date);
+            
+            // Actualizar los campos de año y periodo
+            form.setFieldsValue({
+                enrollmentYear: year,
+                enrollmentPeriod: period
+            });
+        } else {
+            // Si se limpia la fecha, limpiar también año y periodo
+            form.setFieldsValue({
+                enrollmentYear: undefined,
+                enrollmentPeriod: undefined
+            });
+        }
+    };
+
     const handleSubmit = async (values) => {
         try {
             const formattedValues = {
@@ -51,7 +79,6 @@ const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
             form.resetFields();
             showSuccessAlert('Matrícula guardada correctamente');
         } catch (error) {
-            // Validación para matrícula duplicada (error 409)
             if (error.response && error.response.status === 409) {
                 showErrorAlert('El estudiante ya tiene una matrícula activa. No se puede crear una nueva.');
             } else {
@@ -61,9 +88,8 @@ const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
     };
 
     const currentYear = moment().year();
-    const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+    const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i); // 2 años atrás hasta 2 años adelante
 
-    // Función para filtrar estudiantes en el select
     const filterStudents = (input, option) => {
         const searchTerm = input.toLowerCase();
         return (
@@ -119,49 +145,67 @@ const EnrollmentForm = ({ initialValues, onSubmit, onCancel }) => {
             </Row>
 
             <Row gutter={16}>
-                <Col span={12}>
+                <Col span={24}>
                     <Form.Item
                         name="enrollmentDate"
-                        label="Fecha de Matrícula"
+                        label={
+                            <span>
+                                Fecha de Matrícula&nbsp;
+                                <Tooltip title="La fecha seleccionada determinará automáticamente el año y periodo de matrícula">
+                                    <InfoCircleOutlined style={{ color: '#1890ff' }} />
+                                </Tooltip>
+                            </span>
+                        }
                         rules={[{ required: true, message: 'Por favor seleccione la fecha de matrícula' }]}
                     >
                         <DatePicker 
                             style={{ width: '100%' }} 
                             placeholder="Seleccione la fecha"
                             prefix={<CalendarOutlined />}
-                            disabledDate={(current) => current && current > moment().endOf('day')}
+                            onChange={handleDateChange}
+                            format="DD/MM/YYYY"
                         />
                     </Form.Item>
                 </Col>
+            </Row>
+
+            <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
                         name="enrollmentYear"
                         label="Año de Matrícula"
                         rules={[{ required: true, message: 'Por favor seleccione el año de matrícula' }]}
                     >
-                        <Select placeholder="Seleccione el año">
+                        <Select 
+                            placeholder="Seleccione el año"
+                            allowClear
+                        >
                             {years.map(year => (
                                 <Option key={year} value={year.toString()}>{year}</Option>
                             ))}
                         </Select>
                     </Form.Item>
                 </Col>
+                <Col span={12}>
+                    <Form.Item
+                        name="enrollmentPeriod"
+                        label="Periodo de Matrícula"
+                        rules={[{ required: true, message: 'Por favor seleccione el periodo de matrícula' }]}
+                    >
+                        <Select 
+                            placeholder="Seleccione el periodo"
+                            allowClear
+                        >
+                            {years.map(year => (
+                                <React.Fragment key={year}>
+                                    <Option value={`${year}-1`}>Periodo 1 ({year})</Option>
+                                    <Option value={`${year}-2`}>Periodo 2 ({year})</Option>
+                                </React.Fragment>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                </Col>
             </Row>
-
-            <Form.Item
-                name="enrollmentPeriod"
-                label="Periodo de Matrícula"
-                rules={[{ required: true, message: 'Por favor seleccione el periodo de matrícula' }]}
-            >
-                <Select placeholder="Seleccione el periodo">
-                    {years.map(year => (
-                        <React.Fragment key={year}>
-                            <Option value={`${year}-1`}>{year}-1</Option>
-                            <Option value={`${year}-2`}>{year}-2</Option>
-                        </React.Fragment>
-                    ))}
-                </Select>
-            </Form.Item>
 
             <Form.Item>
                 <Space>
